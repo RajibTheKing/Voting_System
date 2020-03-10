@@ -506,10 +506,13 @@ function check_ip()
 {
 	$ip_address = new ip_address();
 	$ip_address->findAll("status='Active'");
-	
-	$value=false;
+
+        $value=false;
 	for($i=0;$i<count($ip_address->data);$i++)
 	{
+                echo "TheKing--> Inside general.php: ";
+                print_r($ip_address->data[$i]['ip_address']);
+                echo "<br/>";
 		if($ip_address->data[$i]['ip_address']==get_ip())
 		{
 			$value=true;

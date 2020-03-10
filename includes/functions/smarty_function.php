@@ -246,13 +246,4 @@ function insert_count_total_vote($var)
     echo $total;
 }
 
-function insert_load_total_vote($var)
-{?>
-	<script>
-		 window.onload=count_vote(<?=$var['election_id']?>);
-	</script>
-		<?
-}
-
-
 ?>

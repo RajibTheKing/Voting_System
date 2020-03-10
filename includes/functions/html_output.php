@@ -18,8 +18,9 @@ function display_tpl($header_text="", $filename="")
         $msg = $_REQUEST['msg'];
     STemplate::assign('err',$err);
     STemplate::assign('msg',$msg);
-        
-        STemplate::assign('HEADER_TEXT', ($header_text)?$header_text:HEADER_TEXT);
+    echo "TheKing--> inside display_tpl";
+    echo $header_text;
+    STemplate::assign('HEADER_TEXT', $header_text? $header_text: "HEADER_TEXT");
 
     STemplate::display("header.tpl");
     STemplate::display(($filename)?$filename:get_tpl());

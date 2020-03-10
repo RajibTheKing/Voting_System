@@ -5,7 +5,7 @@
     ============================================================================*/
 
     define('BASE_DIR', 'C:/xampp/htdocs/voting_system');
-    define('SITE_HOST', 'http://10.100.32.51/');
+    define('SITE_HOST', 'http://127.0.0.1/');
     define('BASE_URL', SITE_HOST.'/voting_system');
     define('IMAGES_DIR', BASE_DIR.'/images');
     define('IMAGES_URL', BASE_URL.'/images');
@@ -43,10 +43,9 @@
     DATABASE CONNECTION
     ============================================================================*/
 
-    $conn = &ADONewConnection(DB_TYPE);
-    $conn->PConnect(DB_SERVER, DB_SERVER_USERNAME, DB_SERVER_PASSWORD, DB_DATABASE)
-	or die("error in userdata");
-
+    //$conn = &ADONewConnection(DB_TYPE);
+    //$conn->PConnect(DB_SERVER, DB_SERVER_USERNAME, DB_SERVER_PASSWORD, DB_DATABASE)
+	$conn = new mysqli(DB_SERVER, DB_SERVER_USERNAME, DB_SERVER_PASSWORD, DB_DATABASE);
 
     /*=========================================================================
     CONSTANTS FROM DATABASE
@@ -56,14 +55,14 @@
     STemplate::assign("session",$_SESSION);
 
     $sql = 'select * from configuration';
-    $rsc = $conn->Execute($sql);
+    $rsc = mysqli_query($conn, $sql);
 
-    while(!$rsc->EOF)
+    $index = 0;
+    while($row = mysqli_fetch_assoc($rsc))
     {
-        define($rsc->fields['key'], $rsc->fields['value']);
-
-        STemplate::assign($rsc->fields['key'], $rsc->fields['value']);
-        $rsc->MoveNext();
+        $index = $index + 1;
+        define($row['key'], $row['value']);
+        STemplate::assign($row['key'], $row['value']);
     }
 
 

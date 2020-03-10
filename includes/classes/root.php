@@ -39,9 +39,24 @@ class root
             $join_table=",`".$join_table."` ";
         $this->sql = "select $fields_sql from `".$this->name."`$join_table $conditions_sql $order_sql $limit_sql";
         //echo $this->sql; //exit();
-        $rs = $conn->Execute($this->sql);
-        $this->data = $rs->GetRows();
+        $rs = mysqli_query($conn, $this->sql);
+        $this->data = $this->make_rows($rs);
         return $this->data;
+    }
+
+    function make_rows($rs)
+    {
+        $tempArray = array(); // make a new array to hold all your data
+
+
+        $index = 0;
+        while($row = mysqli_fetch_assoc($rs))
+        {
+            $tempArray[$index] = $row;
+            $index++;
+        }
+
+        return $tempArray;
     }
     
     
@@ -51,8 +66,9 @@ class root
 
         $this->sql = $conditions;
         //echo $this->sql; //exit();
-        $rs = $conn->Execute($this->sql);
-        $this->data = $rs->GetRows();
+
+        $rs = mysqli_query($conn, $this->sql);
+        $this->data = $this->make_rows($rs);
         return $this->data;
     }
     
@@ -60,8 +76,8 @@ class root
     /*  Returns the specified (or all if not specified) fields from the first record that matches $conditions. */
     function find($conditions="", $fields="", $order="",$join_table="")
     {
-        $row = $this->findAll($conditions, $fields, $order, "0, 1",$join_table);
-        $this->data = $row[0];
+        $rows = $this->findAll($conditions, $fields, $order, "0, 1",$join_table);
+        $this->data = $rows[0];
         return $this->data;
     }
     
@@ -978,7 +994,7 @@ class root
         return $data['image_path'];
     }
        /*  Image Upload */
-        function photo_upload($var)
+    function photo_upload($var)
     {
 
         $filename = mt_rand().".jpg";
